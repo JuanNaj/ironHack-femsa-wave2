@@ -1,0 +1,338 @@
+openapi: 3.0.0
+info:
+  title: API de Gestión de Usuarios, Órdenes y Servicio al Cliente
+  version: 1.0.0
+  description: API para gestionar usuarios, procesar órdenes e interacciones de servicio al cliente.
+
+paths:
+  /usuarios:
+    post:
+      summary: Crear un nuevo usuario
+      description: Endpoint para crear un nuevo usuario en el sistema. Se requiere proporcionar información básica del usuario, como nombre y correo electrónico.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      responses:
+        '201':
+          description: Usuario creado exitosamente.
+        '400':
+          description: Solicitud inválida.
+    get:
+      summary: Listar todos los usuarios
+      description: Recupera una lista de todos los usuarios registrados en el sistema.
+      responses:
+        '200':
+          description: Lista de usuarios.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Usuario'
+        '500':
+          description: Error interno del servidor.
+
+  /usuarios/{id}:
+    get:
+      summary: Obtener un usuario por ID
+      description: Devuelve la información de un usuario específico basado en su ID.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID único del usuario.
+      responses:
+        '200':
+          description: Datos del usuario.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '404':
+          description: Usuario no encontrado.
+    put:
+      summary: Actualizar un usuario por ID
+      description: Actualiza los datos de un usuario específico identificado por su ID.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID único del usuario.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Usuario'
+      responses:
+        '200':
+          description: Usuario actualizado exitosamente.
+        '404':
+          description: Usuario no encontrado.
+    delete:
+      summary: Eliminar un usuario por ID
+      description: Elimina a un usuario del sistema basado en su ID.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID único del usuario.
+      responses:
+        '204':
+          description: Usuario eliminado exitosamente.
+        '404':
+          description: Usuario no encontrado.
+
+  /ordenes:
+    post:
+      summary: Registrar una nueva orden
+      description: Endpoint para registrar una nueva orden en el sistema. Requiere especificar detalles del producto y la cantidad.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Orden'
+      responses:
+        '201':
+          description: Orden registrada exitosamente.
+        '400':
+          description: Solicitud inválida.
+
+    get:
+      summary: Listar todas las órdenes
+      description: Obtiene una lista de todas las órdenes registradas en el sistema.
+      responses:
+        '200':
+          description: Lista de órdenes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Orden'
+        '500':
+          description: Error interno del servidor.
+
+  /ordenes/{id}:
+    get:
+      summary: Obtener una orden por ID
+      description: Devuelve los detalles de una orden específica basado en su ID.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID único de la orden.
+      responses:
+        '200':
+          description: Datos de la orden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Orden'
+        '404':
+          description: Orden no encontrada.
+    put:
+      summary: Actualizar una orden por ID
+      description: Actualiza los detalles de una orden específica identificada por su ID.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID único de la orden.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Orden'
+      responses:
+        '200':
+          description: Orden actualizada exitosamente.
+        '404':
+          description: Orden no encontrada.
+    delete:
+      summary: Eliminar una orden por ID
+      description: Elimina una orden del sistema basado en su ID.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID único de la orden.
+      responses:
+        '204':
+          description: Orden eliminada exitosamente.
+        '404':
+          description: Orden no encontrada.
+
+  /tickets:
+    post:
+      summary: Abrir un nuevo ticket de soporte
+      description: Crea un nuevo ticket de soporte para registrar un problema o consulta de un cliente.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ticket'
+      responses:
+        '201':
+          description: Ticket creado exitosamente.
+        '400':
+          description: Solicitud inválida.
+
+    get:
+      summary: Listar todos los tickets
+      description: Recupera una lista de todos los tickets de soporte abiertos o cerrados.
+      responses:
+        '200':
+          description: Lista de tickets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticket'
+        '500':
+          description: Error interno del servidor.
+
+  /tickets/{id}:
+    get:
+      summary: Obtener un ticket por ID
+      description: Devuelve los detalles de un ticket de soporte específico basado en su ID.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID único del ticket.
+      responses:
+        '200':
+          description: Datos del ticket.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ticket'
+        '404':
+          description: Ticket no encontrado.
+    put:
+      summary: Actualizar un ticket por ID
+      description: Permite actualizar la información de un ticket específico, como el estado o la descripción del problema.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID único del ticket.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ticket'
+      responses:
+        '200':
+          description: Ticket actualizado exitosamente.
+        '404':
+          description: Ticket no encontrado.
+    delete:
+      summary: Cerrar un ticket por ID
+      description: Marca un ticket de soporte como cerrado en el sistema.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID único del ticket.
+      responses:
+        '204':
+          description: Ticket cerrado exitosamente.
+        '404':
+          description: Ticket no encontrado.
+
+components:
+  schemas:
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        nombre:
+          type: string
+          example: "Juan Pérez"
+        correo_electronico:
+          type: string
+          format: email
+          example: "juan.perez@example.com"
+        direccion:
+          type: string
+          example: "Calle Falsa 123, Ciudad, País"
+      required:
+        - nombre
+        - correo_electronico
+
+    Orden:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1001
+        producto:
+          type: string
+          example: "Laptop"
+        cantidad:
+          type: integer
+          example: 2
+        estado:
+          type: string
+          example: "Procesando"
+        fecha_creacion:
+          type: string
+          format: date-time
+          example: "2023-10-12T15:30:00Z"
+      required:
+        - producto
+        - cantidad
+
+    Ticket:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2001
+        usuario_asociado:
+          type: integer
+          example: 1
+        descripcion:
+          type: string
+          example: "Problema con la entrega del producto"
+        estado:
+          type: string
+          example: "Abierto"
+        fecha_creacion:
+          type: string
+          format: date-time
+          example: "2023-10-12T15:30:00Z"
+      required:
+        - usuario_asociado
+        - descripcion
+        - estado
